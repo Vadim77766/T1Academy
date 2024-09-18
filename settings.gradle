@@ -1,0 +1,12 @@
+//tag::chapter01[]
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+    }
+}
+
+rootProject.name = 'T1Academy'
+include 'api-tests'
+//end::chapter01[]
+//tag::chapter01-boot[]
+include 'ui-tests'
