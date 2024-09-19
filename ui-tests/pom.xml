@@ -38,8 +38,5 @@
             <artifactId>allure-selenide</artifactId>
             <version>${allure-selenide.version}</version>
         </dependency>
-
     </dependencies>
-
-
 </project>

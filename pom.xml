@@ -10,8 +10,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>api-tests</module>
-        <module>ui-tests</module>
+<!--        <module>api-tests</module>-->
+<!--        <module>ui-tests</module>-->
     </modules>
 
     <properties>
@@ -37,6 +37,16 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.5.0</version>
+            </plugin>
+        </plugins>
+    </build>
+
     <profiles>
         <profile>
             <id>default-profile</id>
@@ -60,18 +70,24 @@
                 <module>ui-tests</module>
             </modules>
         </profile>
+        <profile>
+            <id>smoke</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>3.5.0</version>
+                        <configuration>
+                            <groups>smoke</groups>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+            <modules>
+                <module>api-tests</module>
+                <module>ui-tests</module>
+            </modules>
+        </profile>
     </profiles>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.5.0</version>
-<!--                <configuration>-->
-<!--                    <groups>smoke</groups>-->
-<!--                </configuration>-->
-            </plugin>
-        </plugins>
-    </build>
 </project>

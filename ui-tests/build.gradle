@@ -1,0 +1,5 @@
+dependencies {
+    testImplementation "org.testcontainers:selenium:$seleniumVersion"
+    testImplementation "com.codeborne:selenide:$selenideVersion"
+    testImplementation "io.qameta.allure:allure-selenide:$allureSelenideVersion"
+}

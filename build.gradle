@@ -1,39 +1,53 @@
-apply plugin: 'java'
+plugins {
+    id 'java'
+}
+
+group = 'ru.t1academy'
+version = '1.0-SNAPSHOT'
 
 sourceCompatibility = 17
 targetCompatibility = 17
 
-//junitJupiterVersion = "5.11.0"
 ext {
     junitJupiterVersion = "5.11.0"
     junitAllureVersion = "2.29.0"
+    restAssuredVersion = "5.5.0"
+    allureRestAssuredVersion = "2.29.0"
+    jacksonDatabindVersion = "2.17.2"
+    seleniumVersion = "1.20.1"
+    selenideVersion = "7.5.0"
+    allureSelenideVersion = "2.29.0"
 }
 
 allprojects {
     apply plugin: 'java'
 
-
     repositories {
         mavenCentral()
-        jcenter()
     }
 
     dependencies {
         testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: "$junitJupiterVersion"
-        implementation \
-            "io.qameta.allure:allure-junit5:$junitAllureVersion"
+        implementation "io.qameta.allure:allure-junit5:$junitAllureVersion"
         testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion"
-
     }
 
     test {
-         useJUnitPlatform()
-
+        testLogging {
+            events "passed", "skipped", "failed"
+            exceptionFormat "full"
+        }
+        useJUnitPlatform()
     }
 
-    tasks.register("runSmokeTest", Test) {
+    // Задача для запуска тестов с тегом "smoke"
+    tasks.register('smoke', Test) {
+        testLogging {
+            events "passed", "skipped", "failed", "standardOut", "standardError"
+            exceptionFormat "full"
+        }
         useJUnitPlatform {
-            includeTags "smoke"
+            includeTags("smoke")
         }
     }
 }

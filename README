@@ -1,0 +1,13 @@
+Варианты запуска
+
+Maven:
+mvn clean test
+mvn clean test -Papi-tests
+mvn clean test -Pui-tests
+mvn clean test -Psmoke
+
+Gradle:
+./gradlew test
+./gradlew ui-tests:test
+./gradlew api-tests:test
+./gradlew smoke
