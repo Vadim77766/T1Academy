@@ -1,3 +1,24 @@
+Задание 2  (Тестирование API с помощью библиотеки Rest Assured)
+
+Задание находится в модуле api-tests
+
+Запуск API тестов:
+
+1) Запуск всех тестов
+mvn clean test -Papi-tests
+
+2) Запуск только тестов в классе
+mvn clean test -Papi-tests -Dtest=<ClassName>
+где <ClassName> один из вариантов : AuthTests , ProductTest, CartTests
+
+Сформировать и просмотреть Allure отчет (только для Maven):
+
+T1Academy> mvn io.qameta.allure:allure-maven:2.14.0:serve
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Задание 1  (Сборщики)
+
 Варианты запуска
 
 Maven:
