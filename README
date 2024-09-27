@@ -13,7 +13,7 @@ mvn clean test -Papi-tests -Dtest=<ClassName>
 
 Сформировать и просмотреть Allure отчет (только для Maven):
 
-T1Academy> mvn io.qameta.allure:allure-maven:2.14.0:serve
+mvn io.qameta.allure:allure-maven:2.14.0:serve
 
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 

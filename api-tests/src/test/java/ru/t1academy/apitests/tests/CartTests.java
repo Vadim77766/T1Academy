@@ -1,5 +1,6 @@
 package ru.t1academy.apitests.tests;
 
+import lombok.extern.java.Log;
 import org.junit.jupiter.api.*;
 import ru.t1academy.apitests.data.TestData;
 import ru.t1academy.apitests.model.*;
@@ -14,7 +15,9 @@ public class CartTests {
 
     @BeforeAll
     static public void installSpecs() {
-        token = new LoginService().getToken();
+        LoginService ls = new LoginService();
+        ls.installSpecs();
+        token = ls.getToken();
         new CartService().installSpecs();
     }
 
