@@ -1,3 +1,11 @@
+Задание 4 UI tests
+
+./gradlew clean
+./gradlew ui-tests:test --tests "ru.t1academy.autotests.uitests.task4.SeleniumTest"
+./gradlew ui-tests:test --tests "ru.t1academy.autotests.uitests.task4.SelenideTest"
+./gradlew ui-tests:allureServe
+ctrl + c
+
 Задание 2  (Тестирование API с помощью библиотеки Rest Assured)
 
 Задание находится в модуле api-tests

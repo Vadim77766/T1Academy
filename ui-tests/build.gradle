@@ -1,5 +1,16 @@
+plugins {
+    id 'java'
+    id "io.qameta.allure" version "2.12.0"
+}
+
 dependencies {
     testImplementation "org.testcontainers:selenium:$seleniumVersion"
     testImplementation "com.codeborne:selenide:$selenideVersion"
     testImplementation "io.qameta.allure:allure-selenide:$allureSelenideVersion"
+    testRuntimeOnly('io.qameta.allure:allure-junit5:2.14.0')
+}
+
+allure{
+    autoconfigure = true
+    aspectjweaver = true
 }
