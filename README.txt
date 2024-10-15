@@ -1,3 +1,18 @@
+Задание 5 UI tests Добавить проверки в тесты, подключение отчетов Allure
+
+Задание выполнено в двух вариантах
+1) тесты на Selenium с проверками AssertJ, в том числе несколько кастомных, и отчетом Allure
+1) тесты на Selenide с проверками should,  и более детальном отчетом Allure
+
+Запуск
+
+./gradlew clean
+./gradlew ui-tests:test --tests "ru.t1academy.autotests.uitests.task5.SeleniumTest"
+./gradlew ui-tests:test --tests "ru.t1academy.autotests.uitests.task5.SelenideTest"
+./gradlew ui-tests:allureServe
+ctrl + c
+
+
 Задание 4 UI tests
 
 ./gradlew clean

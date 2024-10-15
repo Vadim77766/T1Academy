@@ -1,8 +1,13 @@
+repositories {
+    mavenCentral()
+}
+
 dependencies {
     testImplementation "io.rest-assured:rest-assured:$restAssuredVersion"
     testImplementation "io.qameta.allure:allure-rest-assured:$allureRestAssuredVersion"
     testImplementation "com.fasterxml.jackson.core:jackson-databind:$jacksonDatabindVersion"
     testCompileOnly "org.projectlombok:lombok:$lombokVersion"
     testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
+    runtimeOnly 'org.aspectj:aspectjweaver:1.9.7'
 }
 
