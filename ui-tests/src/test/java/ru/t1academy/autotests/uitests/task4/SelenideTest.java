@@ -7,13 +7,10 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.SessionId;
 import org.openqa.selenium.support.locators.RelativeLocator;
 import org.slf4j.Logger;
-
-import java.util.List;
 
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
@@ -120,7 +117,6 @@ public class SelenideTest {
         SelenideElement number =
                 $(By.cssSelector("input[type='number']"));
         String numberText = "1234";
-//        number.click();
         number.sendKeys(numberText);
         log.info("Input value : {}", number.getAttribute("value"));
         assertThat(number.getAttribute("value")).isEqualTo(numberText);
@@ -149,17 +145,16 @@ public class SelenideTest {
     @DisplayName("Tests on page Notification Messages")
     public void testNotificationMessages() {
         open("https://the-internet.herokuapp.com/notification_message_rendered");
+        // на элемент нельзя кликнуть если он перекрывается другим
+        // чтобы элементы не перекрывались максимизируем окно
+        getWebDriver().manage().window().maximize();
         while (true) {
             ElementsCollection flash = $$(By.cssSelector("div#flash"));
             if(flash.size() > 0) {
                 if(flash.get(0).getText().contains("unsuccesful")) {
-                    // на элемент нельзя кликнуть если он перекрывается другим
-                    // чтобы элементы не перекрывались максимизируем окно
-                    getWebDriver().manage().window().maximize();
                     $(By.cssSelector("a.close")).click();
-
                     // альтернативный вариант кликнуть джаваскпиптом
-//                    Selenide.executeJavaScript("arguments[0].click();", $(By.cssSelector("a.close")));
+                    // Selenide.executeJavaScript("arguments[0].click();", $(By.cssSelector("a.close")));
                 } else {
                     break;
                 }
@@ -178,19 +173,19 @@ public class SelenideTest {
                 $(By.cssSelector("button[onclick='addElement()']"));
         for (int i = 0; i < 5; i++) {
             addElement.click();
-            SelenideElement delete = $(By.cssSelector("#elements button:last-child"));
-            log.info("Element text : {}", delete.getText());
+            SelenideElement deleteElement = $(By.cssSelector("#elements button:last-child"));
+            log.info("Element text : {}", deleteElement.getText());
         }
-        By deletes = By.cssSelector("button[onclick='deleteElement()']");
+        By deletesLocator = By.cssSelector("button[onclick='deleteElement()']");
         for (int i = 0; i < 3; i++) {
-            ElementsCollection delete = $$(deletes);
-            int r = (int) (Math.random() * delete.size());
+            ElementsCollection deleteElements = $$(deletesLocator);
+            int r = (int) (Math.random() * deleteElements.size());
             log.info("Click by index of element : {}", r);
-            delete.get(r).click();
-            ElementsCollection delete_ = $$(deletes);
-            log.info("Number of Deletes : {}", delete_.size());
-            for (int j = 0; j < delete_.size(); j++) {
-                log.info("Text of Delete #{} : {}", j, delete_.get(j).getText());
+            deleteElements.get(r).click();
+            deleteElements = $$(deletesLocator);
+            log.info("Number of Delete Elements : {}", deleteElements.size());
+            for (int deleteIndex = 0; deleteIndex < deleteElements.size(); deleteIndex++) {
+                log.info("Text of Delete element #{} : {}", deleteIndex, deleteElements.get(deleteIndex).getText());
             }
         }
         waits();

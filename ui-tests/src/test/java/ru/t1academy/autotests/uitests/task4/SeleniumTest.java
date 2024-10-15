@@ -4,7 +4,6 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -151,18 +150,17 @@ public class SeleniumTest {
     @DisplayName("Tests on page Notification Messages")
     public void testNotificationMessages() {
         driver.get("https://the-internet.herokuapp.com/notification_message_rendered");
+        // на элемент нельзя кликнуть если он перекрывается другим
+        // чтобы элементы не перекрывались максимизируем окно
+        driver.manage().window().maximize();
         while (true) {
             List<WebElement> flash = driver.findElements(By.cssSelector("div#flash"));
             if(flash.size() > 0) {
                 if(flash.get(0).getText().contains("unsuccesful")) {
-                    // на элемент нельзя кликнуть если он перекрывается другим
-                    // чтобы элементы не перекрывались максимизируем окно
-                    driver.manage().window().maximize();
                     driver.findElement(By.cssSelector("a.close")).click();
-
                     // альтернативный вариант кликнуть джаваскриптом
-//                    ((JavascriptExecutor) driver).executeScript("arguments[0].click();",
-//                            driver.findElement(By.cssSelector("a.close")));
+                    // ((JavascriptExecutor) driver).executeScript("arguments[0].click();",
+                    // driver.findElement(By.cssSelector("a.close")));
                 } else {
                     break;
                 }
@@ -181,19 +179,19 @@ public class SeleniumTest {
                 driver.findElement(By.cssSelector("button[onclick='addElement()']"));
         for (int i = 0; i < 5; i++) {
             addElement.click();
-            WebElement delete = driver.findElement(By.cssSelector("#elements button:last-child"));
-            log.info("Last added element text : {}", delete.getText());
+            WebElement lastDeleteElement = driver.findElement(By.cssSelector("#elements button:last-child"));
+            log.info("Last added element text : {}", lastDeleteElement.getText());
         }
-        By deletes = By.cssSelector("button[onclick='deleteElement()']");
+        By deletesLocator = By.cssSelector("button[onclick='deleteElement()']");
         for (int i = 0; i < 3; i++) {
-            List<WebElement> delete = driver.findElements(deletes);
-            int r = (int) (Math.random() * delete.size());
+            List<WebElement> deleteElements = driver.findElements(deletesLocator);
+            int r = (int) (Math.random() * deleteElements.size());
             log.info("Click by index of element : {}", r);
-            delete.get(r).click();
-            List<WebElement> delete_ = driver.findElements(deletes);
-            log.info("Number of Deletes elements : {}", delete_.size());
-            for (int j = 0; j < delete_.size(); j++) {
-                log.info("Text of Delete #{} : {}", j, delete_.get(j).getText());
+            deleteElements.get(r).click();
+            deleteElements = driver.findElements(deletesLocator);
+            log.info("Number of Delete elements : {}", deleteElements.size());
+            for (int deleteIndex = 0; deleteIndex < deleteElements.size(); deleteIndex++) {
+                log.info("Text of Delete #{} : {}", deleteIndex, deleteElements.get(deleteIndex).getText());
             }
         }
         waits();
