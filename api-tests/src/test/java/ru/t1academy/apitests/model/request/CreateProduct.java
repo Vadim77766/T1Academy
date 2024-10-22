@@ -1,4 +1,4 @@
-package ru.t1academy.apitests.model;
+package ru.t1academy.apitests.model.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductRes {
-    private int id;
+public class CreateProduct {
     private String name;
     private String category;
     private double price;
