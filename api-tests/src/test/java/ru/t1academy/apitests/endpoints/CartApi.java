@@ -8,7 +8,7 @@ import ru.t1academy.apitests.model.response.ShoppingCart;
 
 import static io.restassured.RestAssured.given;
 
-public class CartApi extends BaseApi {
+public class CartApi extends RestApi {
     public CartApi() {
         super(Urls.CART);
         requestSpecification.contentType(ContentType.JSON);

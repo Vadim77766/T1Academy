@@ -7,7 +7,7 @@ import java.util.List;
 
 import static io.restassured.RestAssured.given;
 
-public class ProductApi extends BaseApi {
+public class ProductApi extends RestApi {
     public ProductApi() {
         super(Urls.PRODUCTS);
     }

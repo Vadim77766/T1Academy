@@ -6,7 +6,7 @@ import ru.t1academy.apitests.data.TestData;
 import ru.t1academy.apitests.model.request.UserLogin;
 
 import static io.restassured.RestAssured.given;
-public class LoginApi extends BaseApi {
+public class LoginApi extends RestApi {
     public LoginApi() {
         super(Urls.LOGIN);
         requestSpecification.contentType(ContentType.JSON);
