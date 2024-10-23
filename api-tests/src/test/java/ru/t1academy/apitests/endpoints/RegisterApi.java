@@ -6,7 +6,7 @@ import ru.t1academy.apitests.data.TestData;
 import ru.t1academy.apitests.model.request.UserRegistration;
 import static io.restassured.RestAssured.given;
 
-public class RegisterApi extends BaseApi {
+public class RegisterApi extends RestApi {
     public RegisterApi() {
         super(Urls.REGISTER);
         requestSpecification.contentType(ContentType.JSON);
