@@ -24,7 +24,7 @@ public class SelenideTest extends SelenideBaseTest {
         } else {
             page.reverseCheckboxesClick();
         }
-        CheckboxesAssert.assertThat(page)
+        CheckboxesPageAssert.assertThat(page)
                 .firstCheckboxIsVisible()
                 .secondCheckboxIsVisible()
                 .firstCheckboxIsSelected()
@@ -39,11 +39,11 @@ public class SelenideTest extends SelenideBaseTest {
         DropdownPage page = new DropdownPage("dropdown");
         String option = "Option 1";
         page.selectOption(option);
-        DropdownAssert.assertThat(page)
+        DropdownPageAssert.assertThat(page)
                 .hasSelectedOption(option);
         option = "Option 2";
         page.selectOption(option);
-        DropdownAssert.assertThat(page)
+        DropdownPageAssert.assertThat(page)
                 .hasSelectedOption(option);
     }
 
@@ -52,7 +52,7 @@ public class SelenideTest extends SelenideBaseTest {
     @DisplayName("Tests on page Disappearing Elements")
     public void testDisappearingElements() {
         DisappearingElementsPage page = new DisappearingElementsPage("disappearing_elements");
-        DisappearingElementsAssert.assertThat(page)
+        DisappearingElementsPageAssert.assertThat(page)
                         .numberOfElementsIsEqual(5);
     }
 
@@ -71,7 +71,7 @@ public class SelenideTest extends SelenideBaseTest {
                         if(input.indexOf("-",1) >= 1)
                             expectedValue = "";
                         expectedValue = expectedValue.replaceAll("[^0-9\\-]", "");
-                        InputsAssert.assertThat(page)
+                        InputsPageAssert.assertThat(page)
                                         .inputHasValue(expectedValue);
                     }));
         }

@@ -19,8 +19,8 @@ public class CheckboxesPage extends BasePage {
     SelenideElement checkBox1 = $(By.cssSelector("form#checkboxes input[type='checkbox']:first-child"));
     SelenideElement checkBox2 = $(By.cssSelector("form#checkboxes input[type='checkbox']:last-child"));
 
-    public CheckboxesAssert check() {
-        return CheckboxesAssert.assertThat(this);
+    public CheckboxesPageAssert check() {
+        return CheckboxesPageAssert.assertThat(this);
     }
 
     @Step("Кликнуть на первый чекбокс")
