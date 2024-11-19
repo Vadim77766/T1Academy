@@ -1,6 +1,5 @@
 package ru.t1academy.autotests.uitests.task8;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import io.qameta.allure.Description;
 import io.qameta.allure.Owner;
 import org.junit.jupiter.api.*;
@@ -10,7 +9,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -24,7 +22,6 @@ import ru.t1academy.autotests.uitests.task5.asserts.UrlAssert;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -42,18 +39,12 @@ public class SeleniumTest {
 
     @BeforeAll
     static void setupClass() {
-//        WebDriverManager.chromedriver().setup();
     }
 
     @BeforeEach
     void setup() throws MalformedURLException {
-//        driver = new ChromeDriver();
-//        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-
         final String selenoidUrl = "http://localhost:4444/wd/hub/";
-//        final String selenoidBrowserName = "chrome";
         final String selenoidBrowserName = System.getProperty("browser");
-//        final String selenoidBrowserVersion = "127.0";
         final String selenoidBrowserVersion = System.getProperty("version");
         System.out.println(selenoidBrowserName);
         DesiredCapabilities caps = new DesiredCapabilities(selenoidBrowserName, selenoidBrowserVersion, Platform.LINUX);
