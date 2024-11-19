@@ -1,5 +1,15 @@
+plugins {
+    id 'java'
+    id "io.qameta.allure" version "2.12.0"
+}
+
 repositories {
     mavenCentral()
+}
+
+compileJava.options.encoding = 'UTF-8'
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
 }
 
 dependencies {
@@ -9,5 +19,6 @@ dependencies {
     testCompileOnly "org.projectlombok:lombok:$lombokVersion"
     testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
     runtimeOnly 'org.aspectj:aspectjweaver:1.9.7'
+
 }
 

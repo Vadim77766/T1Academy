@@ -1,8 +1,51 @@
+Задание 7 AT Framework patterns
+
+1) Модуль api-tests
+Запуск
+Установить параметры с resources/config.properties, например
+BASE_URL=http://9b142cdd34e.vps.myjino.ru:49268/
+ENABLE_LOGS=true
+
+./gradlew clean
+./gradlew api-tests:test
+./gradlew api-tests:allureServe
+ctrl + c
+
+
+2) Модуль ui-tests
+
+Запуск
+Установить параметры с resources/config.properties, например
+BASE_URL=https://the-internet.herokuapp.com/
+
+./gradlew clean
+./gradlew ui-tests:test --tests "ru.t1academy.autotests.uitests.task7.SelenideTest"
+./gradlew ui-tests:allureServe
+ctrl + c
+
+=================================================================================================
+
+Задание 6 UI tests Actions
+
+Задание выполнено в двух вариантах
+1) тесты на Selenium
+2) тесты на Selenide
+
+Запуск
+
+./gradlew clean
+./gradlew ui-tests:test --tests "ru.t1academy.autotests.uitests.task6.SeleniumTest"
+./gradlew ui-tests:test --tests "ru.t1academy.autotests.uitests.task6.SelenideTest"
+./gradlew ui-tests:allureServe
+ctrl + c
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 Задание 5 UI tests Добавить проверки в тесты, подключение отчетов Allure
 
 Задание выполнено в двух вариантах
 1) тесты на Selenium с проверками AssertJ, в том числе несколько кастомных, и отчетом Allure
-1) тесты на Selenide с проверками should,  и более детальном отчетом Allure
+2) тесты на Selenide с проверками should,  и более детальном отчетом Allure
 
 Запуск
 

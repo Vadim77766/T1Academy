@@ -1,125 +1,114 @@
 package ru.t1academy.apitests.tests;
 
-import lombok.extern.java.Log;
+import io.restassured.response.Response;
 import org.junit.jupiter.api.*;
+import ru.t1academy.apitests.assertions.BasicAssert;
+import ru.t1academy.apitests.assertions.DTOObjectAssert;
 import ru.t1academy.apitests.data.TestData;
-import ru.t1academy.apitests.model.*;
-import ru.t1academy.apitests.services.CartService;
-import ru.t1academy.apitests.services.LoginService;
+import ru.t1academy.apitests.endpoints.CartApi;
+import ru.t1academy.apitests.endpoints.LoginApi;
+import ru.t1academy.apitests.model.ProductQuantity;
+import ru.t1academy.apitests.model.response.ShoppingCart;
+
 import static io.restassured.RestAssured.given;
-import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CartTests {
+    private static LoginApi loginApi;
+    private static CartApi cartApi;
     private static String token;
 
     @BeforeAll
     static public void installSpecs() {
-        LoginService ls = new LoginService();
-        ls.installSpecs();
-        token = ls.getToken();
-        new CartService().installSpecs();
+        loginApi = new LoginApi();
+        token = loginApi.getDefaultToken();
+        cartApi = new CartApi();
     }
 
     @Test
     @DisplayName("Проверка получения карты клиента")
     @Order(1)
     public void testGettingShopingCart() {
-        ShoppingCartRes scres = given()
-                        .header("Authorization", "Bearer " + token)
-                        .when()
-                        .get()
-                        .then()
-                        .statusCode(200)
-                        .extract().as(ShoppingCartRes.class);
-        assertTrue(scres.getCart().size() > 0);
+        Response response = cartApi.getShopingCartResponse(token);
+
+        BasicAssert.assertThat(response)
+                .hasStatusCode(200);
+
+        DTOObjectAssert.assertThat(response)
+                .hasSizeGreaterThan("cart", ProductQuantity.class, 0);
     }
     @Test
     @DisplayName("Проверка добавления существующего продукта в карточку клиента")
     @Order(2)
     public void testAddingProduct() {
-        Message m = given()
-                        .header("Authorization", "Bearer " + token)
-                        .body(TestData.EXISTING_PRODUCT)
-                        .when()
-                        .post()
-                        .then()
-                        .statusCode(201)
-                        .extract().as(Message.class);
-        assertNotNull(m);
-        assertEquals(m.getMessage(), "Product added to cart successfully");
-        ShoppingCartRes scres = given()
-                .header("Authorization", "Bearer " + token)
-                .when()
-                .get()
-                .then()
-                .statusCode(200)
-                .extract().as(ShoppingCartRes.class);
-        assertTrue(scres.getCart().size() > 0);
-        assertTrue(scres.getCart().stream().anyMatch(p -> p.getId() == TestData.EXISTING_PRODUCT.getProductId()));
+        Response response = cartApi.addProductToCart(TestData.EXISTING_PRODUCT, token);
+
+        BasicAssert.assertThat(response)
+                .hasStatusCode(201)
+                .containsField("message")
+                .fieldIsEqual("message", "Product added to cart successfully");
+
+        response = cartApi.getShopingCartResponse(token);
+
+        DTOObjectAssert.assertThat(response)
+                .hasSizeGreaterThan("cart", ProductQuantity.class, 0);
+
+        ShoppingCart scres = response.as(ShoppingCart.class);
+        Assertions.assertTrue(scres.getCart().stream()
+                .anyMatch(p -> p.getId() == TestData.EXISTING_PRODUCT.getProductId()));
     }
     @Test
     @DisplayName("Проверка добавления в карточку клиента несуществующего продукта")
     @Order(3)
     public void testAdditionNotExistingProduct() {
-        Message m = given()
-                .header("Authorization", "Bearer " + token)
-                .body(TestData.NOT_EXISTING_PRODUCT)
-                .post()
-                .then()
-                .statusCode(404)
-                .extract().as(Message.class);
-        assertNotNull(m);
-        assertEquals(m.getMessage(), "Product not found");
+        Response response = cartApi.addProductToCart(TestData.NOT_EXISTING_PRODUCT, token);
+
+        BasicAssert.assertThat(response)
+                .hasStatusCode(404)
+                .containsField("message")
+                .fieldIsEqual("message", "Product not found");
     }
     @Test
     @DisplayName("Проверка добавления продукта в карточку клиента, если клиент не авторизован")
     @Order(4)
     public void testAdditionProductWithoutAuthorization() {
-        Msg msg = given()
-                .header("Authorization", "")
-                .body(TestData.EXISTING_PRODUCT)
-                .post()
-                .then()
-                .statusCode(401)
-                .extract().as(Msg.class);
-        assertNotNull(msg);
-        assertEquals(msg.getMsg(), "Missing Authorization Header");
+        Response response = cartApi.addProductToCart(TestData.EXISTING_PRODUCT, "");
+
+        BasicAssert.assertThat(response)
+                .hasStatusCode(422)
+                .containsField("msg")
+                .fieldIsEqual("msg", "Bad Authorization header. Expected 'Authorization: Bearer <JWT>'");
     }
     @Test
     @DisplayName("удаление продукта из карточки клиента")
     @Order(5)
     public void testDeletingProductFromCart() {
-        Message m = given()
-                .header("Authorization", "Bearer " + token)
-                .delete(Integer.toString(TestData.EXISTING_PRODUCT_ID))
-                .then()
-                .statusCode(200)
-                .extract().as(Message.class);
-        assertNotNull(m);
-        assertEquals(m.getMessage(), "Product removed from cart");
-        ShoppingCartRes scres = given()
-                .header("Authorization", "Bearer " + token)
-                .when()
-                .get()
-                .then()
-                .statusCode(200)
-                .extract().as(ShoppingCartRes.class);
-        assertTrue(scres.getCart().size() > 0);
-        assertTrue(scres.getCart().stream().noneMatch(p -> p.getId() == TestData.EXISTING_PRODUCT_ID),
+        Response response = cartApi.deleteProductFromCart(TestData.EXISTING_PRODUCT_ID, token);
+
+        BasicAssert.assertThat(response)
+                .hasStatusCode(200)
+                .containsField("message")
+                .fieldIsEqual("message", "Product removed from cart");
+
+        response = cartApi.getShopingCartResponse(token);
+
+        DTOObjectAssert.assertThat(response)
+                .hasSizeGreaterThan("cart", ProductQuantity.class, 0);
+
+        ShoppingCart scres = response.as(ShoppingCart.class);
+        Assertions.assertTrue(scres.getCart().stream()
+                .noneMatch(p -> p.getId() == TestData.EXISTING_PRODUCT_ID),
                 "Product was not deleted !!!");
     }
     @Test
     @DisplayName("Проверка удаления продукта, который не был добавлен в карточку клиента")
     @Order(6)
     public void testDeletingProductNotAddedInCart() {
-        Message m = given()
-                .header("Authorization", "Bearer " + token)
-                .delete(Integer.toString(TestData.NOT_EXISTING_PRODUCT_ID))
-                .then()
-                .statusCode(404)
-                .extract().as(Message.class);
-        assertNotNull(m);
-        assertEquals(m.getMessage(), "Product not found in cart");
+        Response response = cartApi.deleteProductFromCart(TestData.NOT_EXISTING_PRODUCT_ID, token);
+
+        BasicAssert.assertThat(response)
+                .hasStatusCode(404)
+                .containsField("message")
+                .fieldIsEqual("message", "Product not found in cart");
     }
 }

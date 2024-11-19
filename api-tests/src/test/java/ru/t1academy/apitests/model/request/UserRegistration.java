@@ -1,4 +1,4 @@
-package ru.t1academy.apitests.model;
+package ru.t1academy.apitests.model.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserLoginReq {
+public class UserRegistration {
     private String username;
     private String password;
 }
