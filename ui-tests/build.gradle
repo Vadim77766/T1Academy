@@ -12,6 +12,11 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
+test {
+    systemProperty "browser", System.getProperty("browser")
+    systemProperty "version", System.getProperty("version")
+}
+
 dependencies {
 //    testImplementation "org.testcontainers:selenium:$seleniumVersion"
     testImplementation "com.codeborne:selenide:$selenideVersion"
