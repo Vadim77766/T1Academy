@@ -62,7 +62,7 @@ public class SeleniumTest {
 
         SessionId sessionId = ((RemoteWebDriver) driver).getSessionId();
         assertThat(sessionId).isNotNull();
-        log.info("The sessionId is {}", sessionId.toString());
+        log.info("The sessionId is {}", sessionId);
     }
 
     @Owner("Vadim")
@@ -164,7 +164,7 @@ public class SeleniumTest {
     @Description("Добавить проверки в задание Notification Message из предыдущей лекции.")
     @RepeatedTest(value = 10, failureThreshold = 6)
     @DisplayName("Tests on page Notification Messages")
-    public void testNotificationMessages(RepetitionInfo info) {
+    public void testNotificationMessages() {
         driver.get("https://the-internet.herokuapp.com/");
         driver.findElement(By.cssSelector("a[href='/notification_message']")).click();
         WebElement flash = driver.findElement(By.cssSelector("div#flash"));
