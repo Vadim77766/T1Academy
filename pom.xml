@@ -24,6 +24,7 @@
         <slf4j.version>2.0.16</slf4j.version>
         <logback.version>1.5.8</logback.version>
         <assertj.version>3.26.3</assertj.version>
+        <aspectj.version>1.9.22.1</aspectj.version>
     </properties>
 
     <dependencies>
@@ -62,6 +63,8 @@
             <version>${assertj.version}</version>
             <scope>test</scope>
         </dependency>
+
+
     </dependencies>
 
     <build>
@@ -72,7 +75,7 @@
                 <version>3.5.0</version>
                 <configuration>
                     <argLine>
-                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/1.9.6/aspectjweaver-1.9.6.jar"
+                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
                     </argLine>
 <!--                    <systemProperties>-->
 <!--                        <property>-->
@@ -88,7 +91,7 @@
                     <dependency>
                         <groupId>org.aspectj</groupId>
                         <artifactId>aspectjweaver</artifactId>
-                        <version>1.9.6</version>
+                        <version>${aspectj.version}</version>
                     </dependency>
                 </dependencies>
             </plugin>
